@@ -33,10 +33,10 @@ The datasource can be configured in the database file.
 ```php
 class DATABASE_CONFIG {
 
-	public $sample = array(
+	public $instagram = array(
 		'datasource'    => 'InstagramDatasource.InstagramSource',
-		'client_id'     => '' // from your Instagram client
-		'client_secret' => '' // from your Instagram client
+		'client_id'     => '', // from your Instagram client
+		'client_secret' => '', // from your Instagram client
 		'redirect_url'  => '' // from your Instagram client
 	);
 
@@ -48,8 +48,8 @@ Alternatively, it can be added to the ```ConnectionManager``` manually.
 ```php
 ConnectionManager::add('instagram', array(
 	'datasource'    => 'InstagramDatasource.InstagramSource',
-	'client_id'     => '' // from your Instagram client
-	'client_secret' => '' // from your Instagram client
+	'client_id'     => '', // from your Instagram client
+	'client_secret' => '', // from your Instagram client
 	'redirect_url'  => '' // from your Instagram client
 ));
 ```
@@ -87,6 +87,11 @@ $entries = $this->Media->find('all', array(
 		'lat' => $lat,
 		'lng' => $lng
 	)
+));
+
+// Search for media items by Instagram location id
+$entries = $this->Media->find('all', array(
+	'conditions' => array('location_id' => $location_id)
 ));
 ```
 
