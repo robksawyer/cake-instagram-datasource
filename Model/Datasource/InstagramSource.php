@@ -190,9 +190,7 @@ class InstagramSource extends DataSource {
 			throw new InstagramSourceException('Unhandled model type: ' . get_class($model));
 		}
 
-		return !empty($data)
-			? $data
-			: false;
+		return $data ?: false;
 	}
 
 /**
