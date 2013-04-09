@@ -246,7 +246,9 @@ class InstagramSource extends DataSource {
 	protected function _request($type, $action, $params = array()) {
 		switch ($type) {
 		case 'GET':
-			$curl = curl_init($this->_url($action, $params));
+			$url = $this->_url($action, $params);
+			$this->log($url, LOG_DEBUG);
+			$curl = curl_init($url);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			$response = json_decode(curl_exec($curl), true);
 			curl_close($curl);
