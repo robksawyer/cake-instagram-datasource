@@ -145,6 +145,10 @@ class InstagramSource extends DataSource {
 
 			if (!empty($data['data'])) {
 				$pagination = !empty($data['pagination']) ? $data['pagination'] : null;
+				if (method_exists($model, 'setPagination')) {
+					$model->setPagination($pagination);
+				}
+
 				$data = $this->_wrapResults($data['data'], $model->alias);
 
 				// Apply offset
