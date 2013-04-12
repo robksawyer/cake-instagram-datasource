@@ -163,7 +163,10 @@ class InstagramSource extends DataSource {
 						$data = array_slice($data, 0, $limit);
 					} elseif ($limit > count($data)) {
 						$queryData['limit'] = $limit - count($data);
-						if (!empty($pagination['next_max_tag_id'])) {
+
+						if (!empty($pagination['max_tag_id'])) {
+							$queryData['conditions']['max_tag_id'] = $pagination['max_tag_id'];
+						} elseif (!empty($pagination['next_max_tag_id'])) {
 							$queryData['conditions']['max_tag_id'] = $pagination['next_max_tag_id'];
 						} elseif (!empty($pagination['next_max_timestamp'])) {
 							$queryData['conditions']['max_timestamp'] = $pagination['next_max_timestamp'];
