@@ -145,6 +145,10 @@ class InstagramSource extends DataSource {
 
 			if (!empty($data['data'])) {
 				$pagination = !empty($data['pagination']) ? $data['pagination'] : null;
+				if (method_exists($model, 'setPagination')) {
+					$model->setPagination($pagination);
+				}
+
 				$data = $this->_wrapResults($data['data'], $model->alias);
 
 				// Apply offset
@@ -163,7 +167,10 @@ class InstagramSource extends DataSource {
 						$data = array_slice($data, 0, $limit);
 					} elseif ($limit > count($data)) {
 						$queryData['limit'] = $limit - count($data);
-						if (!empty($pagination['next_max_tag_id'])) {
+
+						if (!empty($pagination['max_tag_id'])) {
+							$queryData['conditions']['max_tag_id'] = $pagination['max_tag_id'];
+						} elseif (!empty($pagination['next_max_tag_id'])) {
 							$queryData['conditions']['max_tag_id'] = $pagination['next_max_tag_id'];
 						} elseif (!empty($pagination['next_max_timestamp'])) {
 							$queryData['conditions']['max_timestamp'] = $pagination['next_max_timestamp'];
@@ -246,7 +253,9 @@ class InstagramSource extends DataSource {
 	protected function _request($type, $action, $params = array()) {
 		switch ($type) {
 		case 'GET':
-			$curl = curl_init($this->_url($action, $params));
+			$url = $this->_url($action, $params);
+			$this->log($url, LOG_DEBUG);
+			$curl = curl_init($url);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			$response = json_decode(curl_exec($curl), true);
 			curl_close($curl);
