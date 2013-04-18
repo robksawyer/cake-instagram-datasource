@@ -130,6 +130,12 @@ class InstagramSource extends DataSource {
 					$data = array(
 						'data' => $this->_request('GET', 'media/' . $id, $conditions)
 					);
+				} elseif (!empty($conditions['self'])) {
+					if (!empty($conditions['liked'])) {
+						$data = $this->_request('GET', 'users/self/media/liked');
+					} else {
+						$data = $this->_request('GET', 'users/self/feed');
+					}
 				} elseif (!empty($conditions['location_id'])) {
 					$location_id = $conditions['location_id'];
 					unset($conditions['location_id']);
@@ -197,9 +203,7 @@ class InstagramSource extends DataSource {
 			throw new InstagramSourceException('Unhandled model type: ' . get_class($model));
 		}
 
-		return !empty($data)
-			? $data
-			: false;
+		return $data ?: false;
 	}
 
 /**
