@@ -56,8 +56,10 @@ class InstagramSource extends DataSource {
 
 			return $response;
 		} else {
+
+			$scope = 'basic+comments';
 			// Get authentication URL
-			return 'https://instagram.com/oauth/authorize/?client_id=' . $this->config['client_id'] . '&redirect_uri=' . urlencode($this->config['redirect_url']) . '&response_type=code';
+			return 'https://instagram.com/oauth/authorize/?client_id=' . $this->config['client_id'] . '&redirect_uri=' . urlencode($this->config['redirect_url']) . '&response_type=code&scope=' . $scope;
 		}
 	}
 
